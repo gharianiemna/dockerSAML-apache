@@ -9,10 +9,12 @@ services:
         volumes:
             - '.:/application'
             - './phpdocker/php-fpm/httpd.conf:/usr/local/apache2/conf/httpd.conf'
-            - './phpdocker/php-fpm/ssl/server.key:/usr/local/apache2/conf/server.key'
-            - './phpdocker/php-fpm/ssl/server.crt:/usr/local/apache2/conf/server.crt'
+            - './phpdocker/apache/ssl/server.key:/usr/local/apache2/conf/server.key'
+            - './phpdocker/apache/ssl/server.crt:/usr/local/apache2/conf/server.crt'
         ports:
             - '8080:8080'
+        networks:
+            - my-network
     php-fpm:
         build: phpdocker/php-fpm
         working_dir: /application
@@ -21,3 +23,8 @@ services:
             - './phpdocker/php-fpm/php-ini-overrides.ini:/etc/php/8.2/fpm/conf.d/99-overrides.ini'
         ports:
             - '9000:9000'
+        networks:
+            - my-network
+networks:         
+    my-network:
+        driver : bridge
